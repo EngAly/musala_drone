@@ -8,11 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "drone")
-public class Drone {
+public class Drone extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "serial_number", length = 100, unique = true)
     private String serialNumber;
@@ -28,15 +25,6 @@ public class Drone {
 
     @Enumerated(EnumType.ORDINAL)
     private DroneState state;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getSerialNumber() {
         return serialNumber;
