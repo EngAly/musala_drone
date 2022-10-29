@@ -11,14 +11,21 @@ public class GenericResponse implements Serializable {
     private ResponseStatus status = ResponseStatus.Success;
     private Object result;
     private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    private String errorMessage;
     private String errorDetails;
 
     public GenericResponse(Object result) {
         this.result = result;
     }
 
-    public GenericResponse(ResponseStatus status, String errorDetails) {
+    public GenericResponse(ResponseStatus status, String errorMessage) {
         this.status = status;
+        this.errorMessage = errorMessage;
+    }
+
+    public GenericResponse(ResponseStatus status, String errorMessage, String errorDetails) {
+        this.status = status;
+        this.errorMessage = errorMessage;
         this.errorDetails = errorDetails;
     }
 
@@ -44,6 +51,14 @@ public class GenericResponse implements Serializable {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public String getErrorDetails() {

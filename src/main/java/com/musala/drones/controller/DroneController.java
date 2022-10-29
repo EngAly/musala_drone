@@ -17,4 +17,9 @@ public class DroneController extends GenericController {
     public ResponseEntity<?> registerDrone(@RequestBody Drone drone) {
         return getResponse(droneService.save(drone));
     }
+
+    @GetMapping("/{serialNo}/battery-level")
+    public ResponseEntity<?> registerDrone(@PathVariable String serialNo) {
+        return getResponse(droneService.getBatteryLevel(serialNo));
+    }
 }

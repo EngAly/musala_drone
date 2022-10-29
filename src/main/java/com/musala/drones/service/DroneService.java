@@ -6,4 +6,6 @@ import com.musala.drones.entity.Drone;
 public interface DroneService {
 
     DroneDto save(Drone drone);
+
+    String getBatteryLevel(String serialNo);
 }
