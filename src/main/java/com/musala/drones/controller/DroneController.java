@@ -1,5 +1,6 @@
 package com.musala.drones.controller;
 
+import com.musala.drones.dto.LoadDroneDto;
 import com.musala.drones.entity.Drone;
 import com.musala.drones.service.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +23,11 @@ public class DroneController extends GenericController {
     public ResponseEntity<?> registerDrone(@PathVariable String serialNo) {
         return getResponse(droneService.getBatteryLevel(serialNo));
     }
+
+    @PostMapping("/load-drone")
+    public ResponseEntity<?> loadDrone(@RequestBody LoadDroneDto loadDroneDto) {
+        return getResponse(droneService.loadDrone(loadDroneDto));
+    }
+
+
 }
