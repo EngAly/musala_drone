@@ -17,4 +17,6 @@ public interface DroneService {
     boolean deliverLoadedDrone(String serialNo);
 
     List<Medication> getDroneMedication(String serialNo);
+
+    List<DroneDto> getAvailableDrones();
 }

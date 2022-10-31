@@ -39,5 +39,10 @@ public class DroneController extends GenericController {
         return getResponse(droneService.getDroneMedication(serialNo));
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<?> getAvailableDrones() {
+        return getResponse(droneService.getAvailableDrones());
+    }
+
 
 }

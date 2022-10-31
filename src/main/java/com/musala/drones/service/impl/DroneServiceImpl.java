@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -114,6 +115,13 @@ public class DroneServiceImpl implements DroneService {
         update(droneDB);
 
         return true;
+    }
+
+    @Override
+    public List<DroneDto> getAvailableDrones() {
+        return droneRepo.getDroneByState(DroneState.IDLE)
+                .stream().map(drone -> modelMapper.map(drone, DroneDto.class))
+                .collect(Collectors.toList());
     }
 
     private void changeDroneState(Drone drone, DroneState droneState) {
