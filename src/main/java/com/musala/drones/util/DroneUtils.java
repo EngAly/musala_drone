@@ -1,4 +1,4 @@
-package com.musala.drones;
+package com.musala.drones.util;
 
 import org.springframework.util.CollectionUtils;
 

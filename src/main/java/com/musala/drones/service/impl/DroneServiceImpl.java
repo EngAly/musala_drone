@@ -11,10 +11,12 @@ import com.musala.drones.repository.DroneRepository;
 import com.musala.drones.service.DroneService;
 import com.musala.drones.service.LoadMedicationService;
 import com.musala.drones.service.MedicationService;
+import com.musala.drones.util.DroneConstants;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -46,25 +48,31 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public String getBatteryLevel(String serialNo) {
 
-        Integer batteryCapacity = getDroneBySerialNumber(serialNo).getBatteryCapacity();
+        Integer batteryCapacity = getDroneBySerialNumber(serialNo)
+                .orElseThrow(() -> new DataNotFoundException("Drone not exists"))
+                .getBatteryCapacity();
 
         return (batteryCapacity == null ? 0 : batteryCapacity) + "%";
     }
 
-    private Drone getDroneBySerialNumber(String serialNo) {
-        return droneRepo.getDroneBySerialNumber(serialNo).orElseThrow(() -> new DataNotFoundException("Drone not exists"));
+    private Optional<Drone> getDroneBySerialNumber(String serialNo) {
+        return droneRepo.getDroneBySerialNumber(serialNo);
     }
 
     @Override
     public boolean loadDrone(LoadDroneDto loadDroneDto) {
 
         // check drone is available
-        Drone droneDB = getDroneBySerialNumber(loadDroneDto.getSerialNumber());
-        if (!DroneState.IDLE.equals(droneDB.getState())) throw new DataNotFoundException("Drone already in progress");
+        Drone droneDB = validateDrone(loadDroneDto);
 
         // check medications are exists
-        List medications = medicationService.getMedicationsByCodes(loadDroneDto.getCodes());
+        List<Medication> medications = medicationService.getMedicationsByCodes(loadDroneDto.getCodes());
         if (medications == null) throw new DataNotFoundException("Medications not exists");
+
+        double medicationsWeight = medications.stream().mapToDouble(Medication::getWeight).sum();
+
+        if (medicationsWeight > droneDB.getWeightLimit())
+            throw new DataNotFoundException(String.format("Medications weight (%s) more than drone weight (%s)", medicationsWeight, droneDB.getWeightLimit()));
 
         // check medications not loaded before
         boolean isMedLoaded = loadMedicationService.isMedicationsLoaded(loadDroneDto.getCodes());
@@ -87,4 +95,16 @@ public class DroneServiceImpl implements DroneService {
         drone.setState(droneState);
         update(drone);
     }
+
+    private Drone validateDrone(LoadDroneDto loadDroneDto) {
+        Drone droneDB = getDroneBySerialNumber(loadDroneDto.getSerialNumber()).orElseThrow(() -> new DataNotFoundException("Drone not exists"));
+
+        if (!DroneState.IDLE.equals(droneDB.getState())) throw new DataNotFoundException("Drone already in progress");
+
+        if (droneDB.getBatteryCapacity() < DroneConstants.DRONE_BATTERY_MIN_CAPACITY)
+            throw new DataNotFoundException("Drone capacity less than " + DroneConstants.DRONE_BATTERY_MIN_CAPACITY + "%");
+
+        return droneDB;
+    }
+
 }

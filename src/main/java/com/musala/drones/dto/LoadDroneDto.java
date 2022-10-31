@@ -8,7 +8,7 @@ public class LoadDroneDto {
     private String destination;
 
     private String serialNumber;
-    private Set codes;
+    private Set codes; // set to prevent repeat medication codes
 
     public String getSource() {
         return source;
