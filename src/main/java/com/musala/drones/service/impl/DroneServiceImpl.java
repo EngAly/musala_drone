@@ -5,6 +5,7 @@ import com.musala.drones.dto.LoadDroneDto;
 import com.musala.drones.entity.Drone;
 import com.musala.drones.entity.LoadMedication;
 import com.musala.drones.entity.Medication;
+import com.musala.drones.enums.DroneLoadStatus;
 import com.musala.drones.enums.DroneState;
 import com.musala.drones.exception.DataNotFoundException;
 import com.musala.drones.repository.DroneRepository;
@@ -89,6 +90,30 @@ public class DroneServiceImpl implements DroneService {
         return loadMedicationService.getDroneMedication(serialNo)
                 .map(LoadMedication::getMedications)
                 .orElse(null);
+    }
+
+    @Override
+    public boolean deliverLoadedDrone(String serialNo) {
+
+        LoadMedication droneLoad = loadMedicationService.getDroneMedication(serialNo)
+                .orElseThrow(() -> new DataNotFoundException("Drone not Loaded Yet"));
+
+        if (!DroneLoadStatus.LOADED.equals(droneLoad.getDroneLoadStatus()))
+            throw new DataNotFoundException("Drone must be in  Loaded Status to be delivered");
+
+        // set drone to delivering state
+        Drone droneDB = droneLoad.getDrone();
+        droneDB.setState(DroneState.DELIVERING);
+        update(droneDB);
+
+        droneLoad.setDroneLoadStatus(DroneLoadStatus.DELIVERED);
+        loadMedicationService.update(droneLoad);
+
+        // set drone to delivering state
+        droneDB.setState(DroneState.DELIVERED);
+        update(droneDB);
+
+        return true;
     }
 
     private void changeDroneState(Drone drone, DroneState droneState) {

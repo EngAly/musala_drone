@@ -24,12 +24,17 @@ public class DroneController extends GenericController {
         return getResponse(droneService.getBatteryLevel(serialNo));
     }
 
-    @PostMapping("/load-drone")
+    @PostMapping("/load")
     public ResponseEntity<?> loadDrone(@RequestBody LoadDroneDto loadDroneDto) {
         return getResponse(droneService.loadDrone(loadDroneDto));
     }
 
-    @GetMapping("/{serialNo}/drone-medications")
+    @PostMapping("/{serialNo}/deliver")
+    public ResponseEntity<?> deliverLoadedDrone(@PathVariable String serialNo) {
+        return getResponse(droneService.deliverLoadedDrone(serialNo));
+    }
+
+    @GetMapping("/{serialNo}/medications")
     public ResponseEntity<?> getDroneMedication(@PathVariable String serialNo) {
         return getResponse(droneService.getDroneMedication(serialNo));
     }

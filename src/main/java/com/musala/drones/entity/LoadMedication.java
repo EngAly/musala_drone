@@ -1,5 +1,7 @@
 package com.musala.drones.entity;
 
+import com.musala.drones.enums.DroneLoadStatus;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class LoadMedication extends BaseEntity {
     private List<Medication> medications;
     @OneToOne
     private Drone drone;
+
+    @Column(name = "DRONE_LOAD_STATUS")
+    private DroneLoadStatus droneLoadStatus;
 
     public String getSource() {
         return source;
@@ -45,5 +50,13 @@ public class LoadMedication extends BaseEntity {
 
     public void setDrone(Drone drone) {
         this.drone = drone;
+    }
+
+    public DroneLoadStatus getDroneLoadStatus() {
+        return droneLoadStatus;
+    }
+
+    public void setDroneLoadStatus(DroneLoadStatus droneLoadStatus) {
+        this.droneLoadStatus = droneLoadStatus;
     }
 }

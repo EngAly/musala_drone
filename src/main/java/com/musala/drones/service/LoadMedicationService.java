@@ -15,4 +15,6 @@ public interface LoadMedicationService {
     boolean isMedicationsLoaded(Set<String> medicationCodes);
 
     Optional<LoadMedication> getDroneMedication(String serialNo);
+
+    boolean update(LoadMedication loadMedication);
 }
