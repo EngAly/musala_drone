@@ -1,12 +1,15 @@
 package com.musala.drones.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "medication")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Medication extends BaseEntity {
 
     private String name;

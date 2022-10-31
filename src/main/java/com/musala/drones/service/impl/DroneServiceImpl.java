@@ -3,6 +3,8 @@ package com.musala.drones.service.impl;
 import com.musala.drones.dto.DroneDto;
 import com.musala.drones.dto.LoadDroneDto;
 import com.musala.drones.entity.Drone;
+import com.musala.drones.entity.LoadMedication;
+import com.musala.drones.entity.Medication;
 import com.musala.drones.enums.DroneState;
 import com.musala.drones.exception.DataNotFoundException;
 import com.musala.drones.repository.DroneRepository;
@@ -72,6 +74,13 @@ public class DroneServiceImpl implements DroneService {
         loadMedicationService.save(medications, droneDB, loadDroneDto);
         changeDroneState(droneDB, DroneState.LOADED);
         return true;
+    }
+
+    @Override
+    public List<Medication> getDroneMedication(String serialNo) {
+        return loadMedicationService.getDroneMedication(serialNo)
+                .map(LoadMedication::getMedications)
+                .orElse(null);
     }
 
     private void changeDroneState(Drone drone, DroneState droneState) {

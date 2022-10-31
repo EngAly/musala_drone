@@ -8,6 +8,7 @@ import com.musala.drones.service.LoadMedicationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -19,6 +20,7 @@ public class LoadMedicationServiceImpl implements LoadMedicationService {
         this.loadMedicationRepo = loadMedicationRepo;
     }
 
+    @Override
     public boolean save(List medications, Drone drone, LoadDroneDto loadDroneDto) {
         LoadMedication loadMedication = new LoadMedication();
         loadMedication.setMedications(medications);
@@ -29,7 +31,13 @@ public class LoadMedicationServiceImpl implements LoadMedicationService {
         return true;
     }
 
+    @Override
     public boolean isMedicationsLoaded(Set<String> medicationCodes) {
         return loadMedicationRepo.getLoadedMedications(medicationCodes) > 0;
+    }
+
+    @Override
+    public Optional<LoadMedication> getDroneMedication(String serialNo){
+        return loadMedicationRepo.getByDrone_SerialNumber(serialNo);
     }
 }

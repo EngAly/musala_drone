@@ -29,5 +29,10 @@ public class DroneController extends GenericController {
         return getResponse(droneService.loadDrone(loadDroneDto));
     }
 
+    @GetMapping("/{serialNo}/drone-medications")
+    public ResponseEntity<?> getDroneMedication(@PathVariable String serialNo) {
+        return getResponse(droneService.getDroneMedication(serialNo));
+    }
+
 
 }
