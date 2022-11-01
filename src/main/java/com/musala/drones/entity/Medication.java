@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "medication")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Medication extends BaseEntity {
 
+    @Pattern(regexp = "^[-a-zA-Z_\\d]*$", message = "Medicine name not valid")
     private String name;
     private Double weight;
 

@@ -8,4 +8,6 @@ import java.util.Set;
 public interface MedicationService {
 
     List<Medication> getMedicationsByCodes(Set<String> medicationSet);
+
+    void saveMedicationListDummyData();
 }
