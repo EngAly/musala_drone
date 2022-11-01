@@ -2,21 +2,24 @@ package com.musala.drones.entity;
 
 import com.musala.drones.enums.DroneModel;
 import com.musala.drones.enums.DroneState;
-import org.springframework.ui.Model;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
 
 @Entity
 @Table(name = "drone")
-public class Drone extends BaseEntity{
+public class Drone extends BaseEntity {
 
 
+    @Length(max = 100, message = "Serial number length 100 characters max")
     @Column(name = "serial_number", length = 100, unique = true)
     private String serialNumber;
 
     @Enumerated(EnumType.ORDINAL)
     private DroneModel model;
 
+    @DecimalMax(value = "500", message = "Weight limit 500gr max")
     @Column(name = "weight_limit")
     private Double weightLimit;
 

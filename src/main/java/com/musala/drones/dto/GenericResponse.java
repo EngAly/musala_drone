@@ -5,25 +5,26 @@ import com.musala.drones.enums.ResponseStatus;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class GenericResponse implements Serializable {
 
     private ResponseStatus status = ResponseStatus.Success;
     private Object result;
     private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-    private String errorMessage;
+    private List<String> errorMessage;
     private String errorDetails;
 
     public GenericResponse(Object result) {
         this.result = result;
     }
 
-    public GenericResponse(ResponseStatus status, String errorMessage) {
+    public GenericResponse(ResponseStatus status, List<String> errorMessage) {
         this.status = status;
         this.errorMessage = errorMessage;
     }
 
-    public GenericResponse(ResponseStatus status, String errorMessage, String errorDetails) {
+    public GenericResponse(ResponseStatus status, List<String> errorMessage, String errorDetails) {
         this.status = status;
         this.errorMessage = errorMessage;
         this.errorDetails = errorDetails;
@@ -53,11 +54,11 @@ public class GenericResponse implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getErrorMessage() {
+    public List<String> getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(List<String> errorMessage) {
         this.errorMessage = errorMessage;
     }
 
