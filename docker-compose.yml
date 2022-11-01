@@ -1,0 +1,53 @@
+version: '3'
+
+volumes:
+  musala_mysql_data:
+    name: musala_mysql_data
+
+networks:
+ musala_drone_network:
+  name: musala_drone_network
+ 
+services:
+  musala_drone:
+   container_name: musala_drone
+   build: .
+   image: musala/drone:v1
+   restart: always
+   ports: 
+     - "8080:8080"
+   depends_on:
+      - musala_mysql
+   networks:
+      - musala_drone_network
+
+  musala_mysql:
+    image: mysql:8.0.28
+    container_name: musala_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: musala
+      MYSQL_DATABASE: drones
+      MYSQL_USER: musala
+      MYSQL_PASSWORD: musala
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    volumes:
+      - musala_mysql_data:/var/lib/mysql
+    networks:
+      - musala_drone_network
+      
+  musala_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: musala_pma
+    depends_on:
+      - musala_mysql
+    environment:
+      PMA_HOST: musala_mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      - musala_drone_network
