@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "drone")
@@ -14,6 +15,7 @@ public class Drone extends BaseEntity {
 
     @Length(max = 100, message = "Serial number length 100 characters max")
     @Column(name = "serial_number", length = 100, unique = true)
+    @NotBlank(message = "Serial number Must not be blank")
     private String serialNumber;
 
     @Enumerated(EnumType.ORDINAL)

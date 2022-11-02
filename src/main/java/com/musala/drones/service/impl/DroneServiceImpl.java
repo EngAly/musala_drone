@@ -13,6 +13,7 @@ import com.musala.drones.service.DroneService;
 import com.musala.drones.service.LoadMedicationService;
 import com.musala.drones.service.MedicationService;
 import com.musala.drones.util.DroneConstants;
+import com.musala.drones.util.DroneUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,11 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public DroneDto save(Drone drone) {
+
+        if (getDroneBySerialNumber(drone.getSerialNumber()).isPresent()) {
+            throw new DataNotFoundException("Drone Already Exists");
+        }
+
         drone.setId(null);
         drone.setState(DroneState.IDLE);
         return modelMapper.map(droneRepo.save(drone), DroneDto.class);
@@ -64,6 +70,9 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public boolean loadDrone(LoadDroneDto loadDroneDto) {
 
+        if (DroneUtils.isEmpty(loadDroneDto.getCodes())) {
+            throw new DataNotFoundException("Medications codes not exists");
+        }
         // check drone is available
         Drone droneDB = validateDrone(loadDroneDto);
 
