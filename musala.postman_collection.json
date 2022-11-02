@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "a5c3b8a5-5ba1-42ff-a3dc-521402d3ac5e",
+		"name": "musala",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9097488"
+	},
+	"item": [
+		{
+			"name": "Drone",
+			"item": [
+				{
+					"name": "registerDrone",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serialNumber\": \"12345\",\n    \"model\": \"Lightweight\",\n    \"weightLimit\": 333,\n    \"batteryCapacity\": 25,\n    \"state\": \"IDLE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/drone/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"drone",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "batteryLevel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/drone/:serialNo/battery-level",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"drone",
+								":serialNo",
+								"battery-level"
+							],
+							"variable": [
+								{
+									"key": "serialNo",
+									"value": "aaaaaaa",
+									"description": "serial number"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "avilable-drones",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/drone/available",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"drone",
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drone medications",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/drone/:serialNumber/medications",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"drone",
+								":serialNumber",
+								"medications"
+							],
+							"variable": [
+								{
+									"key": "serialNumber",
+									"value": "12345"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "load drone",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source\": \"Sofia\",\n    \"destination\": \"Varna\",\n    \"serialNumber\": \"12345\",\n    \"codes\": [\n        \"ABCDE4444\",\n        \"ABCDE2222\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/drone/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"drone",
+								"load"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:8080",
+			"type": "string"
+		}
+	]
+}
